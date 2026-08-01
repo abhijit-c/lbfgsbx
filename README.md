@@ -98,8 +98,17 @@ uv sync --dev
 uv run pytest
 ```
 
+## License
+
+`lbfgsbx` is licensed under the Apache License 2.0. See [LICENSE](LICENSE) and
+[NOTICE](NOTICE) for details and attribution.
+
 ## References
 
+- This implementation was developed with reference to
+  [JAXopt's L-BFGS-B implementation](https://github.com/google/jaxopt/blob/main/jaxopt/_src/lbfgsb.py),
+  which is licensed under the
+  [Apache License 2.0](https://github.com/google/jaxopt/blob/main/LICENSE).
 - R. H. Byrd, P. Lu, J. Nocedal, and C. Zhu, “A Limited Memory Algorithm for
   Bound Constrained Optimization,” *SIAM Journal on Scientific Computing*,
   1995.

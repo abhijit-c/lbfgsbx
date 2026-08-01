@@ -1,3 +1,21 @@
+# Copyright 2023 Google LLC
+# Modifications Copyright 2026 Abhijit Chowdhary
+#
+# This file contains code derived from JAXopt's L-BFGS-B implementation and
+# has been substantially modified for the lbfgsbx project.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 """Limited-memory BFGS with box constraints.
 
 The implementation follows Byrd, Lu, Nocedal, and Zhu (1995): it computes a
