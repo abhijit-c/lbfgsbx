@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "A standalone JAX implementation of L-BFGS-B"
 readme = "README.md"
 license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
 authors = [
     { name = "abhijit-c", email = "abhijit9331@gmail.com" }
 ]
