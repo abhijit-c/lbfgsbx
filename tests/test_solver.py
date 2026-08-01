@@ -72,6 +72,28 @@ def test_bounded_quadratic_finds_projected_optimum(lower, upper):
     assert int(result.nfev) == int(result.njev) == int(result.nls) + 1
 
 
+@pytest.mark.parametrize(
+    ("x0", "center"),
+    [
+        ((-3.0, -1.0, 4.0), (-2.0, 1.5, 0.5)),
+        ((2.0, 3.0, -4.0), (1.0, -2.0, -0.5)),
+    ],
+)
+def test_nonnegativity_constraints(x0, center):
+    center_array = jnp.asarray(center)
+
+    result = minimize(
+        lambda x: jnp.sum((x - center_array) ** 2),
+        jnp.asarray(x0),
+        bounds=(0.0, jnp.inf),
+        tol=1e-6,
+    )
+
+    assert result.success
+    np.testing.assert_allclose(result.x, jnp.maximum(center_array, 0.0), atol=1e-6)
+    assert bool(jnp.all(result.x >= 0.0))
+
+
 def test_unconstrained_problem_and_args():
     target = jnp.array([2.0, -3.0])
     result = minimize(
