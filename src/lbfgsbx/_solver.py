@@ -34,9 +34,6 @@ import optax
 from jax.flatten_util import ravel_pytree
 
 
-PyTree = Any
-
-
 class LbfgsbResult(NamedTuple):
     """Result returned by :func:`minimize`.
 
@@ -93,7 +90,7 @@ def _validate_options(
         raise ValueError("tol must be non-negative")
 
 
-def _validate_params(x0: PyTree) -> tuple[list[jax.Array], jnp.dtype]:
+def _validate_params(x0) -> tuple[list[jax.Array], jnp.dtype]:
     leaves = jax.tree.leaves(x0)
     if not leaves:
         raise ValueError("x0 must contain at least one array leaf")
@@ -109,7 +106,7 @@ def _validate_params(x0: PyTree) -> tuple[list[jax.Array], jnp.dtype]:
     return arrays, dtype
 
 
-def _broadcast_bound(bound: PyTree, x0: PyTree, dtype: jnp.dtype, name: str) -> PyTree:
+def _broadcast_bound(bound, x0, dtype: jnp.dtype, name: str):
     x_structure = jax.tree.structure(x0)
     bound_structure = jax.tree.structure(bound)
     array_parameter = jax.tree_util.treedef_is_leaf(x_structure)
@@ -138,9 +135,7 @@ def _broadcast_bound(bound: PyTree, x0: PyTree, dtype: jnp.dtype, name: str) -> 
     return jax.tree.map(broadcast, bound_tree, x0)
 
 
-def _prepare_bounds(
-    bounds: tuple[PyTree, PyTree] | None, x0: PyTree, dtype: jnp.dtype
-) -> tuple[PyTree, PyTree]:
+def _prepare_bounds(bounds, x0, dtype: jnp.dtype):
     if bounds is None:
         lower = jax.tree.map(lambda x: jnp.full_like(x, -jnp.inf), x0)
         upper = jax.tree.map(lambda x: jnp.full_like(x, jnp.inf), x0)
@@ -165,7 +160,7 @@ def _prepare_bounds(
     return lower, upper
 
 
-def _ravel(tree: PyTree) -> jax.Array:
+def _ravel(tree) -> jax.Array:
     leaves = jax.tree.leaves(tree)
     return jnp.concatenate([jnp.ravel(leaf) for leaf in leaves])
 
@@ -327,8 +322,8 @@ def _subspace_minimum(
 
 def minimize(
     fun: Callable[..., jax.Array],
-    x0: PyTree,
-    bounds: tuple[PyTree, PyTree] | None = None,
+    x0,
+    bounds=None,
     *,
     args: tuple[Any, ...] = (),
     maxiter: int = 100,
@@ -338,9 +333,9 @@ def minimize(
 ) -> LbfgsbResult:
     """Minimize a differentiable scalar function subject to box constraints.
 
-    ``fun`` is called as ``fun(x, *args)``. Parameters may be an array or a
-    pytree of arrays. Bounds are a ``(lower, upper)`` tuple whose members are
-    either scalars or pytrees matching ``x0``.
+    ``fun`` is called as ``fun(x, *args)``. ``x0`` may be an array or a pytree
+    of arrays. Bounds are a ``(lower, upper)`` tuple whose members are either
+    scalars or pytrees matching ``x0``.
 
     The optimization loop is compatible with ``jax.jit``, but differentiation
     through the returned solution is not supported.
