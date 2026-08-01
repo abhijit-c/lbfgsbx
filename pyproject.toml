@@ -1,0 +1,23 @@
+[project]
+name = "lbfgsbx"
+version = "0.1.0"
+description = "A standalone JAX implementation of L-BFGS-B"
+readme = "README.md"
+authors = [
+    { name = "abhijit-c", email = "abhijit9331@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "jax>=0.11.0",
+    "optax>=0.2.8",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.29,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "scipy>=1.18.0",
+]
